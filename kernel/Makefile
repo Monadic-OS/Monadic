@@ -4,7 +4,7 @@ include $(CONFIG)
 
 all : $(OBJS)
 	for target in $(OBJS); do \
-		(mv -f $$target $(BIN_DIR)/) \
+		(cp -f $$target $(BIN_DIR)/) \
 	done
 
 .s.o :
@@ -13,8 +13,6 @@ all : $(OBJS)
 .c.o :
 	$(GCC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
 
-run : Monadic.elf
-	qemu-system-i386 -kernel Monadic.elf
-
 clean :
+	rm $(BIN_DIR)/*.o
 	rm *.o

@@ -21,4 +21,6 @@ run : Monadic.elf
 	qemu-system-i386 -kernel Monadic.elf
 
 clean :
-	rm $(BIN_DIR)/*.o
+	for sub_target in $(SUB_PROS); do \
+		(cd $$sub_target && $(MAKE) BIN_DIR=$(BIN_DIR) clean) \
+	done
