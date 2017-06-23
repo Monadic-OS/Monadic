@@ -1,14 +1,17 @@
-AS  = i686-elf-as
-GCC = i686-elf-gcc
+OBJS = boot.o kernel.o
 
-Monadic.elf : boot.o kernel.o linker.ld
-	$(GCC) -T linker.ld -o Monadic.elf -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
+include $(CONFIG)
 
-boot.o : boot.s
-	$(AS) boot.s -o boot.o
+all : $(OBJS)
+	for target in $(OBJS); do \
+		(mv -f $$target $(BIN_DIR)/) \
+	done
 
-kernel.o : kernel.c
-	$(GCC) -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+.s.o :
+	$(AS) $< -o $@
+
+.c.o :
+	$(GCC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
 
 run : Monadic.elf
 	qemu-system-i386 -kernel Monadic.elf
