@@ -1,5 +1,5 @@
 OBJS = terminal.o
-TARGET = tty.o
+TARGET = libtty.a
 
 include $(PWD)/make.config
 
@@ -13,8 +13,8 @@ cp_headers :
 	cp -f include/* $(SYSROOT)$(INCLUDEDIR)/
 
 $(TARGET) : $(OBJS)
-	ld -r -s -o $@ $(OBJS)
-	cp -f $@ $(BIN_DIR)/$@
+	$(AR) rcs $@ $(OBJS)
+	cp -f $@ $(SYSROOT)$(LIBDIR)/$@
 
 .s.o :
 	$(AS) $< -o $@

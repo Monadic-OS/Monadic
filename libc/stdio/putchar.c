@@ -1,13 +1,13 @@
 #include <stdio.h>
 
-#if defined(__is_libk)
-#include <kernel/tty.h>
+#if defined(_is_libk)
+#include <tty.h>
 #endif
 
-int putchar(int ic) {
+int putchar(const int ic) {
 #if defined(_is_libk)
 	char c = (char) ic;
-	terminal_write(&c, sizeof(c));
+	terminal_putchar(c);
 #else
 	// TODO: Implement stdio and the write system call.
 #endif

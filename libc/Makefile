@@ -4,13 +4,14 @@ MAKE = make PWD=$(PWD)
 SUB_PROS = stdio stdlib string
 OBJS = $(addsuffix .o,$(SUB_PROS))
 OBJS_DIR = $(addprefix bin/,$(OBJS))
+TARGET = libk.a
 
 include $(PWD)/make.config
 
 .PHONY: all
-all: libk.a
+all: $(TARGET)
 
-libk.a : cp_headers $(OBJS_DIR)
+$(TARGET) : cp_headers $(OBJS_DIR)
 	$(AR) rcs $@ $(OBJS_DIR)
 	cp -f $@ $(SYSROOT)$(LIBDIR)/$@
 
