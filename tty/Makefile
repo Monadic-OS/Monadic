@@ -1,19 +1,20 @@
-OBJS = boot.o main.o crtn.o crti.o crtbegin.o crtend.o
-TARGET = kernel.o
+OBJS = terminal.o
+TARGET = tty.o
 
 include $(PWD)/make.config
 
 CFLAG += -Iinclude
 
 .PHONY: all
-all : $(TARGET)
+all : cp_headers $(TARGET)
+
+.PHONY: cp_headers
+cp_headers :
+	cp -f include/* $(SYSROOT)$(INCLUDEDIR)/
 
 $(TARGET) : $(OBJS)
 	ld -r -s -o $@ $(OBJS)
 	cp -f $@ $(BIN_DIR)/$@
-
-crtbegin.o crtend.o:
-	OBJ=`$(CC) $(CFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
 .s.o :
 	$(AS) $< -o $@

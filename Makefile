@@ -1,17 +1,25 @@
 HOST = i686-elf
 PWD = $(shell pwd)
 MAKE = make PWD=$(PWD)
-SUB_PROS = kernel
-OBJS = kernel.o
+SUB_PROS = libc tty kernel
+OBJS = kernel.o tty.o
 OBJS_DIR = $(addprefix $(BIN_DIR)/,$(OBJS))
 
 include $(PWD)/make.config
 
 .PHONY: all
-all: Monadic.elf
+all: create_sysroot Monadic.elf
 
-Monadic.elf : $(OBJS_DIR) kernel/linker.ld
-	$(GCC) -T kernel/linker.ld -o $@ -nostdlib $(OBJS_DIR) -lgcc $(CFLAG)
+.PHONY: create_sysroot
+create_sysroot:
+	-@mkdir $(SYSROOT)$(PREFIX)
+	-@mkdir $(SYSROOT)$(EXEC_PREFIX)
+	-@mkdir $(SYSROOT)$(BOOTDIR)
+	-@mkdir $(SYSROOT)$(LIBDIR)
+	-@mkdir $(SYSROOT)$(INCLUDEDIR)
+
+Monadic.elf : $(OBJS_DIR) kernel/linker.ld  $(SYSROOT)$(LIBDIR)/libk.a
+	$(CC) -T kernel/linker.ld -o $@ -nostdlib $(OBJS_DIR) -lgcc -lk $(CFLAG)
 
 $(OBJS_DIR) : $(SUB_PROS)
 

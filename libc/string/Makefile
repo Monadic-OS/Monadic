@@ -1,9 +1,10 @@
-OBJS = boot.o main.o crtn.o crti.o crtbegin.o crtend.o
-TARGET = kernel.o
+OBJS = $(patsubst %.c,%.o,$(wildcard *.c))
+TARGET = string.o
 
 include $(PWD)/make.config
 
-CFLAG += -Iinclude
+CFLAG += -Iinclude -D_is_libk
+BIN_DIR = $(PWD)/libc/bin
 
 .PHONY: all
 all : $(TARGET)
@@ -11,12 +12,6 @@ all : $(TARGET)
 $(TARGET) : $(OBJS)
 	ld -r -s -o $@ $(OBJS)
 	cp -f $@ $(BIN_DIR)/$@
-
-crtbegin.o crtend.o:
-	OBJ=`$(CC) $(CFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
-
-.s.o :
-	$(AS) $< -o $@
 
 .c.o :
 	$(CC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
