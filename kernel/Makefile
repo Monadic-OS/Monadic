@@ -1,11 +1,14 @@
-OBJS = boot.o kernel.o
+OBJS = boot.o main.o
+TARGET = kernel.o
 
-include $(CONFIG)
+include $(PWD)/make.config
 
-all : $(OBJS)
-	for target in $(OBJS); do \
-		(cp -f $$target $(BIN_DIR)/) \
-	done
+.PHONY: all
+all : $(TARGET)
+
+$(TARGET) : $(OBJS)
+	ld -r -s -o $@ $(OBJS)
+	cp -f $@ $(BIN_DIR)/$@
 
 .s.o :
 	$(AS) $< -o $@
@@ -13,6 +16,6 @@ all : $(OBJS)
 .c.o :
 	$(GCC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
 
+.PHONY: clean
 clean :
-	rm $(BIN_DIR)/*.o
-	rm *.o
+	-rm *.o

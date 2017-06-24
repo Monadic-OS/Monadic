@@ -4,6 +4,7 @@ An operating system called Monadic.
 ## Build
 To build it, you need to meet the following conditions:  
 - Use i686-elf cross-compiler  
+
 If you are ready, you can run these commands:  
 ``` bash
 make
