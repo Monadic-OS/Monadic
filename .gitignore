@@ -21,3 +21,6 @@
 # Executables
 *.elf
 **/bin/
+
+# Intermediate file
+sysroot
