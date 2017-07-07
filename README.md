@@ -12,7 +12,7 @@ make
 ### Run
 If you have compiled it, you can run the commands to run:
 ``` bash
-qemu-system-i386 -kernel Monadic.elf
+make run
 ```
 
 ## The ways to contact
