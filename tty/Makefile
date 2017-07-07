@@ -8,6 +8,9 @@ CFLAG += -Iinclude
 .PHONY: all
 all : cp_headers $(TARGET)
 
+.PHONY: copy_hander
+copy_hander : cp_headers
+
 .PHONY: cp_headers
 cp_headers :
 	cp -f include/* $(SYSROOT)$(INCLUDEDIR)/
@@ -24,4 +27,5 @@ $(TARGET) : $(OBJS)
 
 .PHONY: clean
 clean :
+	-rm $(TARGET)
 	-rm *.o

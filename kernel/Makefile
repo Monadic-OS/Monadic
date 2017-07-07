@@ -8,9 +8,12 @@ CFLAG += -Iinclude
 .PHONY: all
 all : $(TARGET)
 
+.PHONY: copy_hander
+copy_hander :
+
 $(TARGET) : $(OBJS)
 	ld -r -s -o $@ $(OBJS)
-	cp -f $@ $(BIN_DIR)/$@
+	cp -f $@ $(PRN_BIN_DIR)/$@
 
 crtbegin.o crtend.o:
 	OBJ=`$(CC) $(CFLAG) -print-file-name=$(@F)` && cp "$$OBJ" $@

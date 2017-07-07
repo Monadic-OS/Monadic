@@ -1,21 +1,27 @@
 OBJS = $(patsubst %.c,%.o,$(wildcard *.c))
 TARGET = string.o
+SUB_BIN_DIR = bin
+OBJS_DIR = $(addprefix $(SUB_BIN_DIR)/,$(OBJS))
 
 include $(PWD)/make.config
 
 CFLAG += -Iinclude -D_is_libk
-BIN_DIR = $(PWD)/libc/bin
 
 .PHONY: all
-all : $(TARGET)
+all : create_bin_dir $(TARGET)
 
-$(TARGET) : $(OBJS)
-	ld -r -s -o $@ $(OBJS)
-	cp -f $@ $(BIN_DIR)/$@
+.PHONY: create_bin_dir
+create_bin_dir :
+	-@mkdir bin > /dev/null 2>&1 | true
 
-.c.o :
+$(TARGET) : $(OBJS_DIR)
+	ld -r -s -o $@ $^
+	cp -f $@ $(PRN_BIN_DIR)/$@
+
+$(SUB_BIN_DIR)/%.o : %.c
 	$(CC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
 
 .PHONY: clean
 clean :
-	-rm *.o
+	-rm -r bin
+	-rm $(TARGET)
