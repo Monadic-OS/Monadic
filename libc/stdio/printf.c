@@ -12,15 +12,28 @@ static bool print(const char* data, size_t length) {
 	return true;
 }
 
+static bool int2s(const int data, char *dst) {
+	size_t c = 0;
+	char buf[11];
+	if (!data)
+		buf[c++] = '0';
+	for (int i = data; i; i /= 10)
+		buf[c++] = "0123456789"[i % 10];
+	dst[c] = 0;
+	for (size_t d = 0; d < c; d++)
+		dst[d] = buf[c - d - 1];
+	return true;
+}
+
 int printf(const char* restrict format, ...) {
 	va_list parameters;
 	va_start(parameters, format);
- 
+
 	int written = 0;
- 
+
 	while (*format != '\0') {
 		size_t maxrem = INT_MAX - written;
- 
+
 		if (format[0] != '%' || format[1] == '%') {
 			if (format[0] == '%')
 				format++;
@@ -37,9 +50,9 @@ int printf(const char* restrict format, ...) {
 			written += amount;
 			continue;
 		}
- 
+
 		const char* format_begun_at = format++;
- 
+
 		if (*format == 'c') {
 			format++;
 			char c = (char) va_arg(parameters, int /* char promotes to int */);
@@ -61,6 +74,19 @@ int printf(const char* restrict format, ...) {
 			if (!print(str, len))
 				return -1;
 			written += len;
+		} else if(*format == 'd') {
+			format++;
+			int d = (int) va_arg(parameters, int);
+			char str[11];
+			int2s(d, str);
+			size_t len = strlen(str);
+			if (maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(str, len))
+				return -1;
+			written += len;
 		} else {
 			format = format_begun_at;
 			size_t len = strlen(format);
@@ -74,7 +100,7 @@ int printf(const char* restrict format, ...) {
 			format += len;
 		}
 	}
- 
+
 	va_end(parameters);
 	return written;
 }
