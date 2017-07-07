@@ -3,16 +3,24 @@ An operating system called Monadic.
 
 ## Build
 To build it, you need to meet the following conditions:  
-- Use i686-elf cross-compiler  
+- Use i686-elf cross-compiler
+- Use Linux  
 
 If you are ready, you can run these commands:  
 ``` bash
 make
 ```
+
 ### Run
 If you have compiled it, you can run the commands to run:
 ``` bash
 make run
+```
+
+### Debug
+If you have compiled it with "-g", you can run the commands to debug it:
+``` bash
+make debug
 ```
 
 ## The ways to contact

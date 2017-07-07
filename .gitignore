@@ -24,3 +24,5 @@
 
 # Intermediate file
 sysroot
+
+**/nohup.out

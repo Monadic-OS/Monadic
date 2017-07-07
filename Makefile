@@ -57,6 +57,11 @@ $(SUB_PROS) :
 run : Monadic.elf
 	qemu-system-i386 -kernel Monadic.elf
 
+.PHONY: debug
+debug : Monadic.elf
+	nohup qemu-system-i386 -kernel Monadic.elf -gdb tcp::12345 -S &
+	$(GDB) Monadic.elf
+	killall -9 qemu-system-i386
 
 .PHONY: clean $(SUB_CLEAN)
 clean : $(SUB_CLEAN)
