@@ -22,8 +22,11 @@ $(TARGET) : $(OBJS)
 .s.o :
 	$(AS) $< -o $@
 
-.c.o :
+.cpp.o :
 	$(CC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
+
+.c.o :
+	$(CC) -c $< -o $@ $(CFLAG)
 
 .PHONY: clean
 clean :

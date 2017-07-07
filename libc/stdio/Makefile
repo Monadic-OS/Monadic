@@ -19,7 +19,7 @@ $(TARGET) : $(OBJS_DIR)
 	cp -f $@ $(PRN_BIN_DIR)/$@
 
 $(SUB_BIN_DIR)/%.o : %.c
-	$(CC) -c $< -o $@ $(CFLAG) $(CPPFLAG)
+	$(C) -c $< -o $@ $(CFLAG)
 
 .PHONY: clean
 clean :
